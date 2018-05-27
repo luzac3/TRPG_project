@@ -1,0 +1,32 @@
+﻿練技;;;;;;;;
+name_jp;name;level;MP_consumption;round;kind;buff;func;detail
+アンチボディ;anti_body;1;3;3;resist;{"CON_resist":["poison":4,"disease":4],"POW_resist":["poison":4,"disease":4]};;毒・病気に対する、生命・精神抵抗力+4
+オウルビジョン;owl_vision;1;3;18;add_ability;night_vision;;3分(18ラウンド)暗視
+ガゼルフット;gazelle_foot;1;3;3;buff;{"avoid":1};;回避力+1
+キャッツアイ;cats_eye;1;3;3;buff;{"hit":1};;命中力+1
+スケイルレギンス;scale_leggins;1;3;360;add_skill;warter_protection;;水の加護（水中呼吸は不可）
+ストロングブラッド;strong_blood;1;3;3;reduct;{"fire_reduce":5,"aqua_reduce":5};;炎属性、水・氷属性の物理・魔法ダメージ-5
+チックチック;tick_tick;1;3;360;add_skill;{"jumping":5,"falling_reduce":20};;幅跳び・高跳びの達成値+5、落下ダメージ-20
+ドラゴンテイル;dragon_tail;1;3;18;add_skill;;1;尻尾が生える。既に生えていれば命中+1or追加ダメージ+2
+ビートルスキン;beetle_skin;1;3;3;buff;{"DEF":2};;防護点+2
+マッスルベアー;mastle_bear;1;3;3;buff;{"B_STR":2};;筋力ボーナス+2
+メディテーション;meditation;1;3;3;resist;{"POW_resist":["mental":4]};;精神効果属性の魔法などに対する、精神抵抗力判定の達成値+4
+ラビットイヤー;rabbit_ear;1;3;18;buff;{"listen":2,"danger":2};;聞き耳判定、危険感知判定の達成値+2
+ケンタウロスレッグ;kentaurus_leg;1;3;1;buff;{"AGR":12};;敏捷度+12
+シェイプアニマル;shape_animal;5;3;360;transform;;1;姿を家畜やペットに変身（装備全解除、攻撃はパンチのみ）
+ジャイアントアーム;giant_arm;5;3;1;buff;{"STR":12};;筋力+12
+スフィンクスノレッジ;sphincs_knowledge;5;3;1;buff;{"INT":12};;知力+12
+デーモンフィンガー;daemon_finger;5;3;1;buff;{"DEX":12};;器用度+12
+ファイアブレス;fire_breath;5;3;3;add_skill;;1;炎を吐く攻撃ができるようになる
+リカバリィ;recovery;5;3;0;heal;{"HP":"enhancer_level"};1;HPが「エンハンサー技能レベル」点回復（1ラウンドに1回限り）
+ワイドウィング;wide_wing;5;3;18;add_skill;;1;3分(18ラウンド) 飛行できるようになる。飛行速度は 全力移動で150m/10秒（約50km/h）
+カメレオンカムフラージュ;cameleon_camouflage;10;3;3;buff;{"stealth":4};;30秒(3ラウンド)隠密判定+4
+クラーケンスタビリティ;kraken_stability ;10;3;3;resist;{"fall_down_resist":"none"};1;30秒(3ラウンド)転倒しなくなる
+ジィプロフェシー;zie_prophesy;10;3;360;buff;{"danger":2,"preemtive":2};;危険感知判定・先制判定+2
+ストライダーウォーク;strider_walk;10;3;18;add_skill;;1;水や雲の上を歩いて移動できる
+スパイダーウェブ;spider_web;10;3;18;add_skill;;1;糸を射出し、ロープのように扱える
+タイタンフット;titon_foot;10;3;1;add_skill;;1;建造物に穴を空ける
+トロールバイタル;troll_vital;10;3;3;reduct;{"magic_reduce":4};;魔法被ダメージ-4
+バルーンシールドショット;baloon_seed_shot;10;3;3;add_skill;;1;口で投擲武器を扱い、補助動作で射出攻撃
+フェンリルバイト;fenrir_bite;10;3;18;add_skill;;1;牙が生える。重ね掛けで命中+1または追加ダメージ+2
+ヘルシーボディ;healthy_body;10;3;0;restore;{"poison":true,"disease":true,"mental":true};1;毒、病気、精神効果属性の効果のうち1つを消す

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DB入力・アイテム</title>
+<style></style>
+<script type="text/javascript" src="../jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="item_set.js" charset="uft-8"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="content-style-type" content="text/css">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="special.css" type="text/css" media="screen">
+</head>
+<body>
+
+	<p>
+		名前：<input id="name" type="text">
+	</p>
+
+	<p>
+		非売品：<input id="not_for_sale" type="checkbox">
+	</p>
+
+	<p>
+		基本取引価格：<input id="base_value" type="text">
+	</p>
+	<p>
+		時代：<input id="era" type="text">
+	</p>
+	<div id="category">
+		カテゴリー：<select>
+			<option value="weapon">武器
+			<option value="shield">盾
+			<option value="armor">鎧
+			<option value="ornament">装飾品
+			<option value="use">消費アイテム
+			<option value="general">一般アイテム
+			<option value="ride">騎獣
+		</select>
+		<p id="sub_category">
+			<label id="sub_weapon">
+				<select>
+					<option value="sword">ソード
+					<option value="hammer">ハンマー
+					<option value="spear">スピア
+					<option value="flail">フレイル
+					<option value="warhammer">ウォーハンマー
+					<option value="mace">メイス
+					<option value="grapple">格闘
+					<option value="axe">斧
+					<option value="linkage">絡み武器
+					<option value="throwing">投擲
+					<option value="gun">ガン
+					<option value="bow">弓
+					<option value="crossbow">機械弓
+				</select>　ランク：
+				<label id="weapon_rank">
+					<input type="radio" name = "weapon_rank" value="B" checked>B　
+					<input type="radio" name = "weapon_rank" value="A">A　
+					<input type="radio" name = "weapon_rank" value="S">S　
+					<input type="radio" name = "weapon_rank" value="SS">SS
+				</label>
+				<br><br>
+				<label id="need_STR">必要筋力:
+					<select>
+						<?php
+							for($i=1; $i<=50; $i++){
+								echo "<option value=".$i.">".$i;
+							}
+						?>
+					</select>
+				</label>
+				　用法:
+				<select id="weapon_hand">
+					<option value="1H">1H　
+					<option value="2H">2H　
+					<option value="1H/2H">1H/2H
+				</select>
+			</label>
+			<label id="sub_shield">
+				　ランク：
+				<input type="radio" name = "shield_rank" value="B" checked>B　
+				<input type="radio" name = "shield_rank" value="A">A　
+				<input type="radio" name = "shield_rank" value="S">S　
+				<input type="radio" name = "shield_rank" value="SS">SS
+			</label>
+			<label id="sub_armor">
+				<select>
+					<option value="unmetal">非金属
+					<option value="metal">金属
+				</select>
+				　ランク：
+				<input type="radio" name = "armor_rank" value="B" checked>B　
+				<input type="radio" name = "armor_rank" value="A">A　
+				<input type="radio" name = "armor_rank" value="S">S　
+				<input type="radio" name = "armor_rank" value="SS">SS
+			</label>
+			<label id="sub_ornament">
+				装備可能箇所：
+				<input type ="checkbox" value="head">頭　
+				<input type ="checkbox" value="ear">耳　
+				<input type ="checkbox" value="face">顔　
+				<input type ="checkbox" value="neck">首　
+				<input type ="checkbox" value="back">背中　
+				<input type ="checkbox" value="right_hand">右手　
+				<input type ="checkbox" value="left_hand">左手　
+				<input type ="checkbox" value="waist">腰　
+				<input type ="checkbox" value="foot">足　
+				<input type ="checkbox" value="other">その他
+			</label>
+		</p>
+	</div>
+
+	<p>
+	<!--
+		ornamentでは表示しない？
+	-->
+		使い方：
+		<select id="how_to_use">
+			<option value="possession">所持
+			<option value="consumption">消費
+			<option value="equip">装備
+			<option value="ec">装備＆消費
+		</select>
+	</p>
+
+	<p>
+		<input type="checkbox" id="maken">魔剣など
+	</p>
+	<div id="maken_input">
+		<div id="maken_0">
+			<select>
+				<option value="buff">〇</option>
+				<option value="add_sub_skill">☆</option>
+				<option value="add_main_skill">〆</option>
+				<option value = "add_sengen_skill">☑</option>
+				<option value="choice">▼</option>
+				<option value="all_time">▽</option>
+			</select>
+
+			能力名：<input type="text"><br>
+			説明：<textarea></textarea>
+		</div>
+		<p>
+			<button type="button" value="add">項目追加</button>
+		</p>
+
+		<input type="checkbox" id="rank">ランク効果　
+		<div>
+			<div id="maken_rank_0">
+				<select>
+					<option value="buff">〇
+					<option value="add_sub_skill">☆
+					<option value="add_main_skill">〆
+					<option value = "add_sengen_skill">☑
+					<option value="choice">▼
+					<option value="all_time">▽
+				</select>
+
+				名称等：<input type="text"><br>
+				説明：<textarea></textarea>
+			</div>
+			<button type="button" value="add">項目追加</button>
+		</div>
+	</div>
+
+	<div>
+		<p>
+			<input type="checkbox" id="is_buff">能力上昇あり
+		</p>
+		<p id="buff_input_0">
+			<select id="buff">
+				<option class="status" value="AGR">敏捷
+				<option value="B_AGR">敏捷ボーナス
+				<option class="status" value="DEX">器用
+				<option value="B_DEX">器用ボーナス
+				<option class="status" value="STR">筋力
+				<option value="B_STR">筋力ボーナス
+				<option class="status" value="INT">知力
+				<option value="B_INT">知力ボーナス
+				<option class="status" value="CON">生命
+				<option value="B_CON">生命ボーナス
+				<option class="status" value="POW">精神
+				<option value="B_POW">精神ボーナス
+				<option value="DEF">防護点
+				<option value="HP">HP
+				<option value="HP_MAX">最大HP
+				<option value="MP">MP
+				<option value="MP_MAX">最大MP
+				<option value="POW_resist">精神抵抗
+				<option value="CON_resist">生命抵抗
+				<option value="magic_power">魔力
+				<option value="physical_damage">物理ダメージ
+				<option value="reduction">ダメージ軽減
+			</select>
+			<select id="number">
+				<option value=1>1
+				<option value=2>2
+				<option value=3>3
+				<option value=4>4
+				<option value=5>5
+				<option value=6>6
+				<option value=7>7
+				<option value=8>8
+				<option value=9>9
+				<option value=10>10
+				<option value=11>11
+				<option value=12>12
+				<option value=13>13
+				<option value=14>14
+				<option value=15>15
+				<option value=16>16
+				<option value=17>17
+				<option value=18>18
+			</select>
+		</p>
+		<button type="button" value="add">項目追加</button>
+	</div>
+
+	<p>
+		説明：<textarea id="detail"></textarea>
+	</p>
+
+<button type="button" value="send" id="send">送信</button>
+<button type="button" value="list" id="list">アイテムリスト</button>
+

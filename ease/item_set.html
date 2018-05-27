@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DB入力・アイテム</title>
+<style></style>
+<script type="text/javascript" src="../jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="index.js" charset="uft-8"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="content-style-type" content="text/css">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="special.css" type="text/css" media="screen">
+<link rel="stylesheet" href="pop_up.css" type="text/css" media="screen">
+</head>
+<body>
+
+	<p id="name">
+		名前：<input type="text">
+	</p>
+	
+	<p id="not_for_sale">
+		非売品：<input type="checkbox">
+	</p>
+	
+	<p id="base_value">
+		基本取引価格：<input type="text">
+	</p>
+	
+	<p id="category">
+		カテゴリー：<select>
+			<option value="weapon">
+			<option value="shield">
+			<option value="armor">
+		</select>
+		<p id="sub_category">
+			サブカテゴリー：
+			<label id="sub_weapon">
+				<select>
+					<option value="sword">ソード
+					<option value="hammer">ハンマー
+					<option value="spear">スピア
+					<option value="flail">フレイル
+					<option value="warhammer">ウォーハンマー
+					<option value="mace">メイス
+					<option value="grapple">格闘
+					<option value="axe">斧
+					<option value="linkage">絡み武器
+					<option value="throwing">投擲
+					<option value="gun">ガン
+					<option value="bow">弓
+					<option value="crossbow">機械弓
+				</select>　ランク：
+				
+				<input type="radio" name = "weapon_rank" value="B">B　
+				<input type="radio" name = "weapon_rank" value="A">A　
+				<input type="radio" name = "weapon_rank" value="S">S　
+				<input type="radio" name = "weapon_rank" value="SS">SS
+
+				　用法:
+				<select>
+					<option value="1H">1H　
+					<option value="2H">2H　
+					<option value="1H/2H">1H/2H
+				</select>
+			</label>
+			<label id="sub_shield">
+				　ランク：
+				<input type="radio" name = "weapon_rank" value="B">B　
+				<input type="radio" name = "weapon_rank" value="A">A　
+				<input type="radio" name = "weapon_rank" value="S">S　
+				<input type="radio" name = "weapon_rank" value="SS">SS
+			</label>
+			<label id="sub_armor">
+				<select>
+					<option value="unmetal">
+					<option value="metal">
+				</select>
+				　ランク：
+				<input type="radio" name = "weapon_rank" value="B">B　
+				<input type="radio" name = "weapon_rank" value="A">A　
+				<input type="radio" name = "weapon_rank" value="S">S　
+				<input type="radio" name = "weapon_rank" value="SS">SS
+			</label>
+			<label id="sub_ornament">
+				装備可能箇所：
+				<input type ="checkbox" value="head">頭　
+				<input type ="checkbox" value="ear">耳　
+				<input type ="checkbox" value="face">顔　
+				<input type ="checkbox" value="neck">首　
+				<input type ="checkbox" value="back">背中　
+				<input type ="checkbox" value="right_hand">右手　
+				<input type ="checkbox" value="left_hand">左手　
+				<input type ="checkbox" value="waist">腰　
+				<input type ="checkbox" value="foot">足　
+				<input type ="checkbox" value="other">その他
+			</label>
+		</p>
+	</p>
+	
+	<p>
+		使い方：
+		<select id="how_to_use">
+			<option value="possession">所持
+			<option value="consumption">消費
+			<option value="equip">装備
+	</p>
+	
+	<p>
+		<input type="checkbox" id="is_buff">能力上昇あり
+		<p id="buff_input">
+			<select id="buff_bilong">
+				<option value="AGR">
+				<option value="B_AGR">
+				<option value="AGR">
+				<option value="B_AGR">
+				<option value="AGR">
+				<option value="B_AGR">
+				<option value="AGR">
+				<option value="B_AGR">
+				<option value="AGR">
+				<option value="B_AGR">
+				<option value="AGR">
+				<option value="B_AGR">
+				<option value="DEF">
+				<option value="B_AGR">
+		</p>
+	</p>
+	
+	<p>
+		<input type="text" id="buff_bilong">
+	</p>
+	
+	<p>
+		説明：<textarea id="detail"></textarea>
+	</p>
+	
+	name	era	not_for_sale	base_value	category	weapon_hand	ornament	how_to_use	buff_bilong	buff	func	detail
+
+
+<select>
+<option value="frea">フレア</option>
+<option value="nelva">ネルヴァ</option>
+<option value="diana">ディアナ</option>
+<option value="aaliyah">アリーヤ</option>
+<option value="karin">かりん</option>
+</select>
+
+<button type="button" value="GO">入る</button>
+

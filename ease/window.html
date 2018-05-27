@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>エネミーリスト</title>
+<style></style>
+<script type="text/javascript" src="../jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="get_input.js" charset="uft-8"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="content-style-type" content="text/css">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="special.css" type="text/css" media="screen">
+<link rel="stylesheet" href="pop_up.css" type="text/css" media="screen">
+</head>
+<body>
+
+<?php
+$character_name = $_GET["character_name"];
+//$character_name ="dyana";
+$character_table_name = "character_table_name";
+$table_name_array = array(
+	'battle_skill',
+	'alchemist',
+//	'weapon',
+//	'magic',
+	'enhancer',
+//	'bird',
+//	'rider',
+//	'ability'
+);
+
+$table_name_array_jp = array(
+	'battle_skill' => "戦闘特技",
+	'alchemist' => "アルケミスト",
+//	'weapon' => "武器", 武器は別にしたい
+//	'magic' => "魔法",
+	'enhancer' => "エンハンサー"
+//	'bird' => "バード",
+//	'rider' => "ライダー",
+//	'ability' => "種族特徴"
+);
+
+require_once("./conection.php");
+$mysqli = db_connect();
+//DBを選択できるようにー
+
+$sql="SELECT * FROM pc WHERE name = '".$character_name."'";
+
+$result = $mysqli -> query($sql);
+
+$my_status = $result->fetch_assoc();
+$column = $result -> fetch_fields();
+
+foreach($column as $key){
+	$name = $key->name;
+	//echo $my_status[$name];
+	$my_status[$name] = json_decode($my_status[$name]);
+}
+
+echo "<br>\n";
+
+$result->close();
+
+echo <<<EOD
+<table>
+<th><tr>スキル一覧</tr></th>
+<td id="all_buff"><tr>全体バフ・手入力バフ</tr></td>
+<td><tr>
+	<p id="all_buff_0" value=0>
+		<input type = "checkbox" class="check">　スキル名:
+		<input type="text">　増減ステータス1:
+		<select class="status">
+
+		</select>
+		<select class="status_number">
+			<option value=0>0
+			<option value=0>1
+			<option value=0>2
+			<option value=0>3
+		</select>　増減ステータス2:
+		<select>
+		</select>　増減ステータス3:
+		<select></select>
+	</p>
+	<p><button type="button" value="add">追加</button>　<button type="button" value="del">削除</button></p>
+</tr></td>
+
+EOD;
+for($i=0; $i<count($table_name_array); $i++){
+	$tn_arr = $table_name_array[$i];
+	if(!array_key_exists($tn_arr,$my_status["skill"]) && $tn_arr != "battle_skill"){
+		continue;
+	}
+	echo "<tr class='closer'><td>".$table_name_array_jp[$tn_arr]."：\n";
+	$temp =0;
+	$tn_arr = $table_name_array[$i];
+	if($tn_arr=="enhancer"){
+		echo "<br>";
+		for($j=0; $j<count($my_status[$tn_arr]); $j++){
+			if($temp > 40){
+				echo "<br>";
+				$temp=0;
+			}
+			echo "<label class='detail'><input type = 'checkbox' id='".$my_status[$tn_arr][$j]."'>".$my_status[$tn_arr."_jp"][$j]."</label>";
+			$temp += strlen($my_status[$tn_arr."_jp"][$j]);
+		}
+		echo "</td></tr>\n";
+	}else{
+		echo "<select id='".$tn_arr."'>\n";
+		for($j=0; $j<count($my_status[$tn_arr]); $j++){
+			if($tn_arr == "battle_skill"){
+				$sql="SELECT sengen FROM battle_skill WHERE name = '".$my_status[$tn_arr][$j]."'";
+				$result = $mysqli -> query($sql);
+				$sengen_flag = $result->fetch_assoc();
+				if(!$sengen_flag["sengen"]){continue;}
+			}
+			echo "<option class='detail' value='".$my_status[$tn_arr][$j]."'>".$my_status[$tn_arr."_jp"][$j]."\n";
+		}
+		echo "</select>";
+		if($tn_arr == "alchemist"){
+			echo "　<input type='checkbox'>補助動作で使用";
+		}
+		echo "</td></tr>\n";
+	}
+}
+
+$mysqli->close();
+//詳細ボックス表示用
+echo <<<EOD
+	<div id="detail">
+
+	</div>
+EOD;
+/*
+$show_array = array();
+$return_array = array();
+$mysqli = db_connect();
+for($i=0,len=$i<count($table_name_array); $i<$len; $i++){
+
+	$sql="SELECT * FROM ".$table_name_array[$i];
+	$show_array[$table_name_array[$i]] = array();
+
+	foreach($result as $row){
+		$show_array[$table_name_array][$row["name"]] = $row;
+		$return_array = [$row["name"]] = $row;
+	}
+	$result->close();
+}
+$mysqli->close();
+
+//$row_cnt = $result->num_rows;
+//行数カウント用
+
+
+
+
+
+<<<EOD
+<table>
+<th><tr>スキル一覧</tr></th>
+<td id="all_buff"><tr>全体バフ・手入力バフ</tr></td>
+<td><tr>
+	<p id="all_buff_0" value=0>
+		<input type = "checkbox" class="check">　スキル名:<input type="text">　増減ステータス1:<select></select>　増減ステータス2:<select></select>　増減ステータス3:<select></select>
+	</p>
+	<p><button type="button" value="add">追加</button>　<button type="button" value="del">削除</button></p>
+</tr></td>
+
+EOD;
+
+for($i=0,len=$i<count($table_name_array); $i<$len; $i++){
+
+	echo "<td id='".$table_name_array[$i]."_buff' class="closer"><tr>$table_name_array_jp[$table_name_array[$i]]</tr></td>";
+	echo "<td class = 0><tr>";
+
+	$enhancer = json_decode($character[$table_name_array[$i]],true);
+	echo "<p class='".$table_name_array[$i]."'><select id='".$table_name_array[$i]."_select'>";
+	for($j=0,$len = count($table_name_array[$i]); $j<$len; $j++){
+		echo "<option value='".$table_name_array[$i][$j]."' class = '".$table_name_array[$i][$j]."'>".$show_array[$table_name_array[$i]][$table_name_array[$i][$j]]["name_jp"]."</option>";
+	}
+
+	echo "</select>　<button type='button' value='".$table_name_array[$i]."' class='add'>追加</button></p>";
+	echo "<div id='".$table_name_array[$i]."_contents'></div>";
+
+	ehco "<p><button type='button' value='".$table_name_array[$i]."' class='del'>削除</button></p>";
+}
+
+*/
+/*
+<td id="enhancer_buff" class="closer"><tr>エンハンサー</tr></td>
+<td class = 0><tr>
+EOD;
+
+	$enhancer = json_decode($character["enhancer"],true);
+	echo "<p class='enhaner'><select id='enhancer_select'>";
+	for($i=0,$len = count($enhancer); $i<$len; $i++){
+		echo "<option value='".$enhancer[$i]."' class = '".$enhancer[$i]."'>".$show_array["enhancer"][$enhancer[$i]]["name_jp"]."</option>";
+	}
+	echo "</select>　<button type='button' value='enhancer' class='add'>追加</button></p>";
+	echo "<div id='enhancer_contents'></div>";
+	ehco "<p><button type='button' value='enhancer' class='del'>削除</button></p>";
+echo "</tr></td>";
+
+	//名前を飛ばしてJSで書くのん
+	for($i=0,$len=count($enhancer); $i<$len; $i++){
+		echo "<p id='enhancer_buff_".$enhancer[$i]."' value=".$i.">";
+		if(is_null($show_array["enhancer"][$enhancer[$i]]["buff"])){
+			continue;
+		}
+		$buff = json_decode($show_array["enhancer"][$enhancer[$i]]["buff"],true);
+			echo "<input type = 'checkbox'>　スキル名:<input type='text'>　";
+			$count = 1;
+			foreach($buff as  $key => $value){
+				if($value > 0){
+					echo $count$,":".$key."+".$value.　";
+				}else{
+					echo $count$,":".$key.$value.　";
+				}
+			}
+		echo "<label value=$show_array["enhancer"][$enhancer[$i]]["round"]>残り　".$show_array["enhancer"][$enhancer[$i]]["round"]."　R</label></p>";
+	}
+echo "</tr></td>";
+
+<td id="alchemsit_buff"><tr>アルケミスト</tr></td>
+<td><tr>
+EOD;
+	$alchemist = json_decode($character["alchemist"],true);
+	for($i=0,$len=count($alchemist); $i<$len; $i++){
+		echo "<p id='alchemist_buff_".$alchemist[$i]."' value=".$i.">";
+		if(is_null($show_array["alchemist"][$alchemist[$i]]["buff"])){
+			continue;
+		}
+		$buff = json_decode($show_array["alchemist"][$alchemist[$i]]["buff"],true);
+			echo "<input type = 'checkbox'>　スキル名:<input type='text'>　";
+			$count = 1;
+			foreach($buff as  $key => $value){
+				if($value > 0){
+					echo $count$,":".$key."+".$value.　";
+				}else{
+					echo $count$,":".$key.$value.　";
+				}
+			}
+		echo "<label value=$show_array["alchemist"][$enhanalchemistcer[$i]]["round"]>残り　".$show_array["alchemist"][$alchemist[$i]]["round"]."　R</label></p>";
+	}
+echo "</tr></td>";
+
+
+
+
+
+
+*/
+//上に武器とステータスを表示する形式をとるか
+//全部並べると単に邪魔にしかならないので・・・
+//SELECTの横にaddボタンを置いて入力し、「使用」することでMPなどの消費は自動的に。バフを加算してリロードする流れ
+
+
+/*
+<td id="all_buff"><tr>デバフ</tr></td>
+<td><tr>
+	<p id="all_buff_0" value=0>
+		<input type = "checkbox">　スキル名:<input type="text">　増減ステータス1:<select></select>　増減ステータス2:<select></select>　増減ステータス3:<select></select>
+	</p>
+	<p><button type="button" value="add">追加</button>　<button type="button" value="del">削除</button></p>
+</tr></td>
+*/
+?>
+
+

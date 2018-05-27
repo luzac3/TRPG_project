@@ -1,0 +1,151 @@
+﻿最低限必要な機能
+
+練技等の自動計算
+宣言特技等の自動計算
+
+
+(できれば)ラウンド数管理
+
+基本の骨組みはキャラクター保管所とほぼ同等のものでいい
+
+入力項目は名前、それぞれのスキルのレベル
+(できれば)キャラクターのレベル等はDBから引きずり出してきたい
+
+騎獣は今回あきらめる。バッサリ
+
+練技　必須、これが一番厄介な項目
+戦闘特技　必須、これは基本的に自動計算、Ajaxを使ってPHPから引っ張り出す
+Tableは個々に用意、作成自体はエクセルでも可能だし
+
+基本項目
+名称
+バフ
+デバフ
+を基本に、
+MP消費などを入れていく
+ONOFFのタイミングをPC側の手入力にゆだねることで、毎回再計算させることが可能になっている。システムでやらせるとこうはいかないのだった。
+
+　いやどうだろう、このシステム考えてみたら、全バフとか、いったんベースの能力値にクリーンして、足しなおす方が早い・・・早くない？
+　うん、その方が早いと思う。変なものが消えることもないし、ベース能力はベース能力として分離しておくべき(増減の可能性があるものは)
+　要はstatusとbuffed_statusは別にして、乗ったステは手番開始時に「毎回全破棄(初期化)」を行う方針で作成する
+　resistやweakも。
+　今回は処理を煩雑にしないため「弱点は全無視」という方針で行う。これくらいなら手計算して足してもそれほどでもない
+　訂正
+　弱点をつく、の項目を用意。チェックしてたら弱点チェック
+　弱点チェックの際、スキルをチェック、スキル内に「看破」があれば自動的にどかーんする
+　んで抵抗も引くん！
+　デバフもGMの手入力だよ馬鹿野郎。「その他デバフ」欄を作ればいいわけだ
+　いやもう、アルケミもなんとか適応してしまうか
+
+
+後バフのつかないものはバッサリで・・・ごめん、処理できないので。すまぬ、すまぬ
+
+0ラウンド目を明示的に作成、表示する
+
+エネミー作成ツールも必要、これがないと無駄に時間がかかるのです。オリ1体や2体なら全然いいんだけどさー
+
+
+
+魔法はさすがに全入力してる場合じゃないので、判定時に「行使」か「命中」か選ぶ形式
+威力は威力入力＋ボーナス自動計算
+
+全体バフは手入力。悲しみ
+
+攻撃とかも種別は自分で選ぶ感じでお願いします
+物理と魔法を選ぶだけだけどー
+→修正
+全種別を選択するん
+ちなみにmagic_consumeにも種類がある
+magic_consume[kind:"all",val:-1]であればすべてのMP消費を減衰
+magic_consume[kind:"magitec":val:-1]であればマギテックを使う時だけ減衰
+
+まあ今回はたぶん魔力消費までいかないけど
+
+
+たとえば
+buff_list[0]['B_STR']=2
+buff_list[1]['B_STR']=1
+buff_list[2]['add_damage_physical']=2
+
+となっているとしましょうか
+総合的なバフを表示するには、単にこれを足していけばいいと。
+この辺の計算は別の関数を使う感じで。今回は間に合わないでしょうけど
+基本的な考え方は簡単です
+
+
+展開するデータと、取得するPHPは別に作成
+取得側はEcho一つでエコー配列を返す
+
+練技展開PHP,魔法展開PHPのように作る
+ただし魔法は間に合わないので作らない・・・すまぬ、すまぬ
+→魔法は手入力オンリー
+
+スキルとかはvalueから引っ張ってくればいいだけなのでそんなに難しくはない
+classNameが種別になっているので、あとはvalueに名称を放り込んでおけばよい
+
+　所有しているスキル名からスキル一覧DBを呼び出し、一行ずつarrayに展開してJSに投げ、インスタンス化して保持
+　この際特殊フラグが立っているものは投げ捨てる
+
+　展開したインスタンスを使ってキャラクターのデータに放り込む
+　結局キャラクターのインスタンスは作成しないとダメっぽい
+
+
+文字列として飛んできているバフのデータとnameデータの配列
+array[name]にはデータベースの連想配列が放り込まれている
+なのでstatusの項目をeval(status)で展開すれば配列は引っ張り出せる
+それをfor-inで展開してpushすればバフだけを放り込める
+
+スキルリストや練技リストをPHPに投げてDB接続してもらって、文字列として受け取りインスタンス化する
+array[0]["id"]=1
+array[0][""name"]="オウルビジョン"みたいな感じで入ってる(すべてのスキルが放り込まれている)
+いやIDはいらんが
+
+buff[array[i]["name"]] = new instance(array[i]);
+によりインスタンス化し、statusとnameの項目は最低限放り込む
+this.name = array["name"];
+this.status = eval(array["status"]);
+これで連想配列が発生　中身は連想配列になっている
+
+自分の持っている(チェックがついている)スキルのnameを保持する
+新規インスタンスを作成する。すべてデフォルト値が入ったバフのリスト
+
+instance[buff_name] += buff[name].status;では足りないので・・・
+for (let key in buff[name].status){
+	instance[key] += buff[name].status[key];
+}
+
+//ちなみに
+インスタンスをinstanceとdebuff_instanceと作成し
+if(buff[name].status[key]>0){
+	instance[key] += buff[name].status[key];
+}elseif(buff[name].status[key]>0){
+	debuff_instance[key] += buff[name].status[key];
+}
+とすればバフデバフを分けるのは簡単
+
+これで全自動バフ足し機が完成したのです
+
+あとはこいつを貼っておいてstorage.storage_setter(instance,instance);とするだけ
+ね？簡単でしょ？
+
+function storage(){
+	var storage_setter = function([Objname],Obj){
+		Function.prototype.toJSON = Function.prototype.toString;
+		window.sessionStorage.setItem([Objname], JSON.stringify(Obj));
+	}
+	var storage_getter = function([Objname]){
+		var parser = function(k,v){return v.toString().indexOf('function') === 0 ? eval('('+v+')') : v};
+		return JSON.parse(window.sessionStorage.getItem([Objname]), parser);
+	}
+}
+
+...呼び出し
+array[name].
+
+
+function has_skill(){}
+//スキルを持っているかチェックするシステム
+
+function rank_kouka(rank,category){}
+//ランク効果の発動をチェック
+
